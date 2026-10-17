@@ -8,7 +8,7 @@ interface ConduitConnection {
   from: { x: number; y: number };
   to: { x: number; y: number };
   active: boolean;
-  color?: "cyan" | "emerald" | "amber" | "rose";
+  color?: "cyan" | "emerald" | "amber" | "rose" | "blue";
 }
 
 interface DataConduitLinesProps {
@@ -23,30 +23,15 @@ export const DataConduitLines: React.FC<DataConduitLinesProps> = ({
   const getColor = (color?: string) => {
     switch (color) {
       case "emerald":
-        return {
-          stroke: "#34d399",
-          glow: "rgba(52, 211, 153, 0.6)",
-          pulse: "#6ee7b7",
-        };
+        return { stroke: "#10b981", pulse: "#059669" };
       case "amber":
-        return {
-          stroke: "#f59e0b",
-          glow: "rgba(245, 158, 11, 0.7)",
-          pulse: "#fde68a",
-        };
+        return { stroke: "#f59e0b", pulse: "#d97706" };
       case "rose":
-        return {
-          stroke: "#f43f5e",
-          glow: "rgba(244, 63, 94, 0.7)",
-          pulse: "#fda4af",
-        };
+        return { stroke: "#f43f5e", pulse: "#e11d48" };
+      case "blue":
       case "cyan":
       default:
-        return {
-          stroke: "#22d3ee",
-          glow: "rgba(34, 211, 238, 0.6)",
-          pulse: "#67e8f9",
-        };
+        return { stroke: "#2563eb", pulse: "#1d4ed8" };
     }
   };
 
@@ -55,16 +40,6 @@ export const DataConduitLines: React.FC<DataConduitLinesProps> = ({
       className={`absolute inset-0 w-full h-full pointer-events-none z-10 ${className}`}
       xmlns="http://www.w3.org/2000/svg"
     >
-      <defs>
-        <filter id="conduit-glow" x="-20%" y="-20%" width="140%" height="140%">
-          <feGaussianBlur stdDeviation="3" result="blur" />
-          <feMerge>
-            <feMergeNode in="blur" />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
-      </defs>
-
       {conduits.map((conduit) => {
         const theme = getColor(conduit.color);
         // Orthogonal/Isometric routing (Manhattan line)
@@ -73,18 +48,17 @@ export const DataConduitLines: React.FC<DataConduitLinesProps> = ({
 
         return (
           <g key={conduit.id}>
-            {/* Background passive conduit trench */}
+            {/* Background passive architectural conduit track */}
             <path
               d={pathD}
               fill="none"
-              stroke="#1e293b"
-              strokeWidth="4"
+              stroke="#e2e8f0"
+              strokeWidth="3"
               strokeLinecap="round"
               strokeLinejoin="round"
-              opacity="0.4"
             />
 
-            {/* Active glowing data pulse line */}
+            {/* Active flow pulse line */}
             {conduit.active && (
               <>
                 <path
@@ -92,23 +66,22 @@ export const DataConduitLines: React.FC<DataConduitLinesProps> = ({
                   fill="none"
                   stroke={theme.stroke}
                   strokeWidth="2"
-                  strokeDasharray="8 6"
+                  strokeDasharray="6 5"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  filter="url(#conduit-glow)"
                   className="animate-conduit-flow"
+                  opacity={0.85}
                 />
 
-                {/* Flowing energy particle */}
+                {/* Flowing particle */}
                 <motion.circle
                   r="3.5"
                   fill={theme.pulse}
-                  filter="url(#conduit-glow)"
                   initial={{ offsetDistance: "0%" }}
                   animate={{ offsetDistance: "100%" }}
                   transition={{
                     repeat: Infinity,
-                    duration: 1.8,
+                    duration: 2.2,
                     ease: "linear",
                   }}
                   style={{

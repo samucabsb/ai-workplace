@@ -5,12 +5,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { PaperItem } from "@/types";
 import {
   X,
-  ShieldAlert,
+  ShieldCheck,
   CheckCircle2,
-  AlertTriangle,
   FileText,
   ExternalLink,
-  Lock,
 } from "lucide-react";
 
 interface HumanApprovalModalProps {
@@ -58,131 +56,162 @@ export const HumanApprovalModal: React.FC<HumanApprovalModalProps> = ({
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm animate-fade-in">
         <motion.div
-          initial={{ opacity: 0, scale: 0.95, y: 10 }}
+          initial={{ opacity: 0, scale: 0.96, y: 8 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.95, y: 10 }}
-          className="relative w-full max-w-4xl max-h-[85vh] flex flex-col rounded-3xl glass-panel-amber border border-amber-500/50 shadow-2xl bg-slate-950 overflow-hidden font-sans"
+          exit={{ opacity: 0, scale: 0.96, y: 8 }}
+          className="relative w-full max-w-4xl max-h-[85vh] flex flex-col rounded-2xl bg-white border border-slate-200 shadow-2xl overflow-hidden font-sans text-slate-800"
         >
           {/* Header */}
-          <div className="p-5 border-b border-amber-500/30 flex items-center justify-between bg-amber-950/30">
+          <div className="p-5 border-b border-slate-200 flex items-center justify-between bg-slate-50/80">
             <div className="flex items-center gap-3">
-              <div className="p-2.5 rounded-2xl bg-amber-500/20 text-amber-400 border border-amber-500/40">
-                <ShieldAlert size={22} className="animate-pulse" />
+              <div className="p-2.5 rounded-xl bg-amber-50 text-amber-600 border border-amber-200">
+                <ShieldCheck size={20} />
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-500 text-slate-950 font-bold uppercase">
-                    LangGraph HITL Checkpoint
-                  </span>
-                  <span className="text-xs text-amber-300 font-mono">
-                    Interrupção Crítica
+                  <h3 className="text-base font-semibold text-slate-900">
+                    Validação do Pesquisador (Human-in-the-Loop)
+                  </h3>
+                  <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200">
+                    Decisão Soberana
                   </span>
                 </div>
-                <h2 className="text-base font-bold text-slate-100 mt-0.5">
+                <p className="text-xs text-slate-500 mt-0.5">
                   {checkpointType === "screening"
-                    ? "Aprovação de Triagem de Literatura (Screening Gate)"
-                    : "Arbitragem de Alto Risco de Viés Metodológico"}
-                </h2>
+                    ? "Selecione os artigos que cumprem seus critérios de inclusão antes de prosseguir para a auditoria."
+                    : "Arbitragem de risco de viés: ratifique a permanência ou exclusão de artigos com fragilidades."}
+                </p>
               </div>
             </div>
 
             <button
               onClick={onClose}
-              className="text-slate-400 hover:text-slate-200 p-2 rounded-xl hover:bg-slate-800 transition-colors"
+              className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 transition"
             >
               <X size={18} />
             </button>
           </div>
 
-          {/* Description Callout */}
-          <div className="p-4 bg-slate-900/60 border-b border-slate-800 text-xs text-slate-300 flex items-center gap-2">
-            <Lock size={15} className="text-amber-400 shrink-0" />
-            <span>
-              <strong>Princípio de Soberania do Pesquisador:</strong> O motor multi-agente está pausado.
-              Selecione os artigos que atendem aos seus critérios de inclusão antes de prosseguir com a extração e auditoria profunda.
-            </span>
-          </div>
-
-          {/* Paper List */}
+          {/* Paper List Content */}
           <div className="flex-1 overflow-y-auto p-5 space-y-3">
-            {papers.map((paper) => {
-              const isIncluded = selectedIds.has(paper.id);
-
-              return (
-                <div
-                  key={paper.id}
-                  onClick={() => togglePaper(paper.id)}
-                  className={`p-3.5 rounded-2xl border transition-all cursor-pointer flex items-start gap-3.5 ${
-                    isIncluded
-                      ? "bg-slate-900/80 border-slate-700 hover:border-amber-500/40"
-                      : "bg-slate-950/60 border-rose-900/40 opacity-60 line-through"
-                  }`}
+            <div className="flex items-center justify-between text-xs text-slate-600 pb-1 border-b border-slate-100">
+              <span className="font-medium">
+                {selectedIds.size} de {papers.length} artigos selecionados para inclusão
+              </span>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => setSelectedIds(new Set(papers.map((p) => p.id)))}
+                  className="text-xs text-blue-600 hover:text-blue-700 font-medium hover:underline"
                 >
-                  <input
-                    type="checkbox"
-                    checked={isIncluded}
-                    onChange={() => togglePaper(paper.id)}
-                    className="mt-1 w-4 h-4 rounded text-amber-500 focus:ring-amber-400 bg-slate-800 border-slate-600"
-                  />
-
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2">
-                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-cyan-400 font-semibold">
-                        {paper.source_api}
-                      </span>
-                      {paper.doi && (
-                        <span className="text-[10px] font-mono text-slate-400">
-                          DOI: {paper.doi}
-                        </span>
-                      )}
-                      {paper.doi_verified && (
-                        <span className="text-[10px] font-mono text-emerald-400 flex items-center gap-0.5">
-                          <CheckCircle2 size={11} /> Crossref OK
-                        </span>
-                      )}
-                    </div>
-
-                    <h4 className="text-xs font-semibold text-slate-100 mt-1">
-                      {paper.title}
-                    </h4>
-
-                    <div className="text-[11px] text-slate-400 mt-0.5">
-                      {paper.authors.slice(0, 3).join(", ")} {paper.year ? `(${paper.year})` : ""}
-                    </div>
-
-                    {paper.abstract && (
-                      <p className="text-[11px] text-slate-400 line-clamp-2 mt-1.5 italic">
-                        {paper.abstract}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Footer Controls */}
-          <div className="p-4 border-t border-slate-800 bg-slate-900/80 flex items-center justify-between">
-            <div className="text-xs font-mono text-slate-400">
-              <span className="text-amber-400 font-bold">{selectedIds.size}</span> aprovados de{" "}
-              <span>{papers.length}</span> artigos minerados
+                  Selecionar Todos
+                </button>
+                <span className="text-slate-300">•</span>
+                <button
+                  type="button"
+                  onClick={() => setSelectedIds(new Set())}
+                  className="text-xs text-slate-500 hover:text-slate-700 font-medium hover:underline"
+                >
+                  Limpar Seleção
+                </button>
+              </div>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="space-y-2">
+              {papers.map((paper) => {
+                const isChecked = selectedIds.has(paper.id);
+
+                return (
+                  <div
+                    key={paper.id}
+                    onClick={() => togglePaper(paper.id)}
+                    className={`p-3.5 rounded-xl border transition cursor-pointer flex items-start gap-3 ${
+                      isChecked
+                        ? "bg-blue-50/40 border-blue-200"
+                        : "bg-slate-50/60 border-slate-200 opacity-60"
+                    }`}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={isChecked}
+                      onChange={() => {}}
+                      className="mt-1 h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                    />
+
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between gap-2">
+                        <h4 className="text-xs font-semibold text-slate-900 leading-snug">
+                          {paper.title}
+                        </h4>
+                        {paper.doi && (
+                          <a
+                            href={`https://doi.org/${paper.doi}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="text-[11px] font-mono text-blue-600 hover:underline flex items-center gap-1 shrink-0"
+                          >
+                            <span>DOI</span>
+                            <ExternalLink size={11} />
+                          </a>
+                        )}
+                      </div>
+
+                      <div className="flex items-center gap-2 mt-1 text-[11px] text-slate-500">
+                        <span>{paper.authors.slice(0, 3).join(", ")}</span>
+                        <span>•</span>
+                        <span>{paper.year || 2024}</span>
+                        <span>•</span>
+                        <span className="font-medium text-slate-600">{paper.journal || "Periódico Acadêmico"}</span>
+                      </div>
+
+                      {paper.abstract && (
+                        <p className="text-[11px] text-slate-600 line-clamp-2 mt-2 leading-relaxed">
+                          {paper.abstract}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Justification note */}
+            <div className="pt-2">
+              <label className="block text-xs font-medium text-slate-700 mb-1">
+                Observações Metodológicas (Opcional):
+              </label>
+              <textarea
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                placeholder="Insira critérios específicos de triagem ou justificativa de exclusão para o log de auditoria..."
+                className="w-full p-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:bg-white transition"
+                rows={2}
+              />
+            </div>
+          </div>
+
+          {/* Footer Actions */}
+          <div className="p-4 border-t border-slate-200 flex items-center justify-between bg-slate-50/90">
+            <div className="text-xs text-slate-500">
+              <span className="font-medium text-slate-700">{selectedIds.size}</span> estudos serão enviados para a bancada de auditoria.
+            </div>
+
+            <div className="flex items-center gap-2">
               <button
                 onClick={onClose}
-                className="px-4 py-2 rounded-xl text-xs font-medium text-slate-400 hover:text-slate-200"
+                className="px-4 py-2 rounded-xl text-xs font-medium text-slate-600 hover:bg-slate-200/60 transition"
               >
                 Cancelar
               </button>
               <button
                 onClick={handleConfirm}
-                className="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold font-mono tracking-wider uppercase transition-all shadow-[0_0_15px_rgba(245,158,11,0.4)] cursor-pointer flex items-center gap-2"
+                className="px-5 py-2 rounded-xl text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white shadow-sm transition active:scale-95 flex items-center gap-1.5"
               >
                 <CheckCircle2 size={14} />
-                <span>Aprovar & Retomar LangGraph</span>
+                <span>Ratificar Seleção e Continuar</span>
               </button>
             </div>
           </div>

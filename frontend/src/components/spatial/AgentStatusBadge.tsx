@@ -8,7 +8,7 @@ interface AgentStatusBadgeProps {
   agentName: string;
   status: AgentStateStatus;
   statusLabel?: string;
-  pulseColor?: "cyan" | "emerald" | "amber" | "rose" | "violet";
+  pulseColor?: "cyan" | "emerald" | "amber" | "rose" | "violet" | "blue";
   className?: string;
 }
 
@@ -16,98 +16,86 @@ export const AgentStatusBadge: React.FC<AgentStatusBadgeProps> = ({
   agentName,
   status,
   statusLabel,
-  pulseColor,
   className = "",
 }) => {
-  // Determine color scheme based on status if not explicitly passed
-  let theme = pulseColor || "cyan";
   let displayLabel = statusLabel;
+  let statusTheme = "blue";
 
   if (!displayLabel) {
     switch (status) {
       case "WORKING":
-        displayLabel = "PROCESSANDO DADOS";
-        theme = theme || "cyan";
+        displayLabel = "Em atividade...";
+        statusTheme = "blue";
         break;
       case "WAITING_APPROVAL":
-        displayLabel = "AGUARDANDO APROVAÇÃO";
-        theme = "amber";
+        displayLabel = "Aguardando validação";
+        statusTheme = "amber";
         break;
       case "COMPLETED":
-        displayLabel = "ETAPA VALIDADA";
-        theme = "emerald";
+        displayLabel = "Etapa concluída";
+        statusTheme = "emerald";
         break;
       case "ERROR":
-        displayLabel = "ANOMALIA / VIÉS";
-        theme = "rose";
+        displayLabel = "Atenção requerida";
+        statusTheme = "rose";
         break;
       default:
-        displayLabel = "STANDBY";
-        theme = "cyan";
+        displayLabel = "Pronto";
+        statusTheme = "slate";
     }
   }
 
-  const colorStyles = {
-    cyan: {
-      border: "border-cyan-500/40",
-      bg: "bg-slate-900/80",
-      text: "text-cyan-400",
-      dot: "bg-cyan-400",
-      shadow: "shadow-[0_0_15px_rgba(34,211,238,0.35)]",
-      pulse: "bg-cyan-400/30",
+  const styles = {
+    blue: {
+      dot: "bg-blue-600",
+      ping: "bg-blue-400",
+      badge: "bg-blue-50 text-blue-700 border-blue-200",
     },
     emerald: {
-      border: "border-emerald-500/40",
-      bg: "bg-slate-900/80",
-      text: "text-emerald-400",
-      dot: "bg-emerald-400",
-      shadow: "shadow-[0_0_15px_rgba(52,211,153,0.35)]",
-      pulse: "bg-emerald-400/30",
+      dot: "bg-emerald-600",
+      ping: "bg-emerald-400",
+      badge: "bg-emerald-50 text-emerald-700 border-emerald-200",
     },
     amber: {
-      border: "border-amber-500/60",
-      bg: "bg-amber-950/40",
-      text: "text-amber-400",
-      dot: "bg-amber-400",
-      shadow: "shadow-[0_0_20px_rgba(245,158,11,0.5)]",
-      pulse: "bg-amber-400/40",
+      dot: "bg-amber-600",
+      ping: "bg-amber-400",
+      badge: "bg-amber-50 text-amber-700 border-amber-200",
     },
     rose: {
-      border: "border-rose-500/60",
-      bg: "bg-rose-950/40",
-      text: "text-rose-400",
-      dot: "bg-rose-400",
-      shadow: "shadow-[0_0_20px_rgba(244,63,94,0.5)]",
-      pulse: "bg-rose-400/40",
+      dot: "bg-rose-600",
+      ping: "bg-rose-400",
+      badge: "bg-rose-50 text-rose-700 border-rose-200",
     },
-    violet: {
-      border: "border-purple-500/40",
-      bg: "bg-slate-900/80",
-      text: "text-purple-400",
-      dot: "bg-purple-400",
-      shadow: "shadow-[0_0_15px_rgba(168,85,247,0.35)]",
-      pulse: "bg-purple-400/30",
+    slate: {
+      dot: "bg-slate-400",
+      ping: "bg-slate-300",
+      badge: "bg-slate-100 text-slate-600 border-slate-200",
     },
-  }[theme];
+  }[statusTheme as "blue" | "emerald" | "amber" | "rose" | "slate"] || {
+    dot: "bg-blue-600",
+    ping: "bg-blue-400",
+    badge: "bg-blue-50 text-blue-700 border-blue-200",
+  };
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: -4, scale: 0.95 }}
+      initial={{ opacity: 0, y: -2, scale: 0.96 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 0.25 }}
-      className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full border backdrop-blur-md text-xs font-mono tracking-wider uppercase transition-all duration-300 ${colorStyles.border} ${colorStyles.bg} ${colorStyles.shadow} ${className}`}
+      transition={{ duration: 0.2 }}
+      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border bg-white shadow-sm text-xs font-sans transition-all ${className}`}
     >
       <div className="relative flex items-center justify-center">
-        {status === "WORKING" || status === "WAITING_APPROVAL" ? (
-          <span
-            className={`absolute w-3 h-3 rounded-full animate-ping ${colorStyles.pulse}`}
-          />
-        ) : null}
-        <span className={`w-2 h-2 rounded-full ${colorStyles.dot}`} />
+        {(status === "WORKING" || status === "WAITING_APPROVAL") && (
+          <span className={`absolute w-2.5 h-2.5 rounded-full animate-ping opacity-75 ${styles.ping}`} />
+        )}
+        <span className={`w-2 h-2 rounded-full ${styles.dot}`} />
       </div>
 
-      <span className="font-semibold text-slate-300">{agentName}:</span>
-      <span className={`font-bold ${colorStyles.text}`}>{displayLabel}</span>
+      <span className="font-semibold text-slate-800">{agentName}</span>
+      <span className="text-slate-400">•</span>
+      <span className={`text-[11px] font-medium px-2 py-0.5 rounded-full border ${styles.badge}`}>
+        {displayLabel}
+      </span>
     </motion.div>
   );
 };

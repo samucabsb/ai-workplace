@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Download, FileSpreadsheet, BookOpen, FileText } from "lucide-react";
+import { FileSpreadsheet, BookOpen, FileText } from "lucide-react";
 
 interface ExportToolbarProps {
   reviewId?: string;
@@ -27,29 +27,29 @@ export const ExportToolbar: React.FC<ExportToolbarProps> = ({
   };
 
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex flex-wrap items-center gap-2">
       <button
         onClick={handleCsvDownload}
-        className="px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 hover:border-emerald-500/50 text-slate-200 hover:text-emerald-400 text-xs font-mono font-medium flex items-center gap-2 transition-all cursor-pointer shadow-sm hover:shadow-glowEmerald"
+        className="px-3 py-1.5 rounded-xl bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-slate-700 text-xs font-medium flex items-center gap-1.5 shadow-sm transition active:scale-95"
       >
-        <FileSpreadsheet size={15} className="text-emerald-400" />
-        <span>Exportar CSV (PRISMA)</span>
+        <FileSpreadsheet size={14} className="text-emerald-600" />
+        <span>Exportar Planilha CSV (PRISMA)</span>
       </button>
 
       <button
         onClick={handleBibtexDownload}
-        className="px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 hover:border-cyan-500/50 text-slate-200 hover:text-cyan-400 text-xs font-mono font-medium flex items-center gap-2 transition-all cursor-pointer shadow-sm hover:shadow-glowCyan"
+        className="px-3 py-1.5 rounded-xl bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-slate-700 text-xs font-medium flex items-center gap-1.5 shadow-sm transition active:scale-95"
       >
-        <BookOpen size={15} className="text-cyan-400" />
+        <BookOpen size={14} className="text-blue-600" />
         <span>Exportar BibTeX (.bib)</span>
       </button>
 
       <button
-        onClick={() => alert("Relatório em Markdown gerado com sucesso.")}
-        className="px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 hover:border-slate-500 text-slate-300 text-xs font-mono font-medium flex items-center gap-2 transition-all cursor-pointer"
+        onClick={() => alert("Relatório de síntese pronto para cópia.")}
+        className="px-3 py-1.5 rounded-xl bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-slate-700 text-xs font-medium flex items-center gap-1.5 shadow-sm transition active:scale-95"
       >
-        <FileText size={15} className="text-slate-400" />
-        <span>Relatório de Auditoria</span>
+        <FileText size={14} className="text-slate-500" />
+        <span>Relatório Textual</span>
       </button>
     </div>
   );
