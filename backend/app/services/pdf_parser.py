@@ -1,6 +1,6 @@
 import hashlib
 import re
-from typing import Dict, List, Tuple
+from typing import Dict, List
 from app.models.schemas import ParagraphEvidence
 
 SECTION_PATTERNS = {

@@ -40,13 +40,16 @@
 
 ---
 
-## Bloco 2: Mapeamento do Fluxo Atual de Revisão Bibliográfica (12 a 15 min)
+## Bloco 2: Mapeamento do Fluxo Atual de Revisão Bibliográfica & Bases Regionais (12 a 15 min)
 
-*Objetivo: Reconstruir o passo a passo factual de como o pesquisador pesquisa, armazena e sintetiza a literatura hoje.*
+*Objetivo: Reconstruir o passo a passo factual de como o pesquisador pesquisa, armazena e sintetiza a literatura hoje, mapeando bases abertas globais e o ecossistema brasileiro.*
 
 1. **Quando você precisa iniciar uma nova revisão bibliográfica ou atualizar o estado da arte para um projeto, o que você faz primeiro?**
-   - *Aprofundamento:* Quais bases de dados você abre? (PubMed, Web of Science, Scopus, Google Scholar, arXiv, Europe PMC, OpenAlex)?
-   - *Aprofundamento:* Você usa termos booleanos (AND/OR/NOT)? Salva as queries em algum lugar?
+   - *Aprofundamento em Bases:* Quais bases de dados você abre?
+     - Bases Internacionais: PubMed/NCBI, Web of Science, Scopus, Google Scholar, arXiv, Europe PMC, OpenAlex?
+     - Ecossistema Brasileiro / América Latina: **SciELO, Portal de Periódicos CAPES (Acesso CAFe), BVS / LILACS**?
+   - *Aprofundamento:* Como você acessa artigos com paywall fora do campus? O Portal CAPES/CAFe cai com frequência ou gera atrito de login?
+   - *Aprofundamento:* Você usa termos booleanos (AND/OR/NOT) e descritores controlados (MeSH / DeCS)? Salva as queries em algum lugar?
 2. **Como você gerencia os PDFs encontrados? Me mostre ou descreva a sua tela.**
    - *Aprofundamento:* Usa gerenciador de referências (Zotero, Mendeley, EndNote)? Ou pastas no Google Drive/Desktop?
    - *Aprofundamento:* Qual é o maior atrito nessa organização? Já perdeu um paper importante que não lembrava onde guardou?
@@ -56,20 +59,23 @@
 
 ---
 
-## Bloco 3: Gargalos e Dores Críticas na Leitura Metodológica (15 a 20 min)
+## Bloco 3: Gargalos e Dores Críticas na Leitura Metodológica & Estratificação de Impacto (15 a 20 min)
 
-*Objetivo: Isolar a dor central que o CortexLab visa resolver: a auditoria crítica e a triagem de rigor científico.*
+*Objetivo: Isolar a dor central que o CortexLab visa resolver: a auditoria crítica, a triagem de rigor científico e a avaliação de prestígio e impacto.*
 
 1. **Qual é a parte mais exaustiva ou frustrante ao ler a seção de 'Metodologia / Materiais e Métodos' de um artigo?**
    - *Investigação:* O que faz você desconfiar de um resultado publicado?
    - *Investigação:* Com que frequência você se depara com descrições incompletas (ex: cepas não especificadas, parâmetros de rede neural ausentes, aleatorização obscura)?
-2. **Conte-me sobre a última vez em que você descartou um paper após ter investido tempo lendo. Qual foi o motivo do descarte?**
+2. **Como você utiliza a estratificação de impacto do periódico na hora de triar o que realmente vale o seu tempo ler?**
+   - *Investigação Brasil/Global:* Você filtra previamente por **Quartil SJR (Q1 a Q4)** ou pelo estrato **Qualis CAPES (A1, A2, A3, A4, B1 a B4)** do quadriênio?
+   - *Investigação:* Já aconteceu de um artigo em periódico Qualis A1 ter metodologia fraca e amostra insuficiente que passou pelos revisores?
+3. **Conte-me sobre a última vez em que você descartou um paper após ter investido tempo lendo. Qual foi o motivo do descarte?**
    - *Aprofundamento:* Em qual parágrafo/seção você descobriu o problema?
    - *Aprofundamento:* Quanto tempo você perdeu antes de perceber que aquele artigo não servia?
-3. **Como você avalia o risco de viés (Risk of Bias) ou problemas estatísticos (ex: p-hacking, poder estatístico insuficiente, subamostragem)?**
+4. **Como você avalia o risco de viés (Risk of Bias) ou problemas estatísticos (ex: p-hacking, poder estatístico insuficiente, subamostragem)?**
    - *Aprofundamento:* Você usa checklists formais (ex: RoB 2, Newcastle-Ottawa, STROBE, PRISMA 2020)?
    - *Aprofundamento:* O que falta para essa verificação ser mais rápida?
-4. **Onde costumam ficar escondidas as reais limitações de um artigo?**
+5. **Onde costumam ficar escondidas as reais limitações de um artigo?**
    - *Investigação:* Os autores colocam na seção de 'Discussion/Limitations' ou você precisa deduzir cruzando tabelas com o texto?
 
 ---
@@ -97,13 +103,14 @@
 > ⚠️ *Atenção ao Mom Test:* Apresente o conceito como um fluxo de trabalho focado no problema, não como um produto finalizado com adjetivos empolgados.
 
 1. **Se você pudesse delegar a triagem inicial de 200 artigos para três assistentes virtuais especializados:**
-   - *Assistente 1:* Minera bases abertas e filtra apenas com critérios explícitos de inclusão/exclusão.
+   - *Assistente 1:* Minera bases abertas e filtra apenas com critérios explícitos de inclusão/exclusão (OpenAlex, PubMed, SciELO).
    - *Assistente 2:* Audita a metodologia, destacando em vermelho parágrafos de risco (tamanho amostral, p-valores limítrofes, falta de controle duplo-cego).
    - *Assistente 3:* Consolida a matriz de revisão (estilo PRISMA) e aponta lacunas não respondidas na literatura.
    **Em que momento desse processo você faria questão absoluta de intervir e bater o martelo antes que eles continuassem?**
 2. **Como você se sentiria ao ver uma interface espacial (um laboratório virtual com cada agente em sua bancada de trabalho) versus uma tela tradicional de chat conversacional?**
    - *Aprofundamento:* O que te dá mais sensação de controle e governança sobre o que a IA está executando?
-3. **Quais colunas são indispensáveis para você na exportação de uma Matriz de Síntese (ex: População, Intervenção, Comparador, Desfecho, Risco de Viés, DOI, Citação BibTeX)?**
+3. **Quais colunas são indispensáveis para você na exportação de uma Matriz de Síntese?**
+   - Ex: População ($N$), Intervenção, Comparador, Desfecho, Risco de Viés, DOI, Citação BibTeX, **Estrato Qualis CAPES, Quartil SJR**?
 4. **Se essa ferramenta gerasse um relatório final rastreável com 100% dos parágrafos referenciados e auditados, o que impediria você de utilizá-la na sua próxima publicação?**
 
 ---
@@ -122,5 +129,6 @@
 
 - [ ] Transcrever notas brutas em até 2 horas após a sessão.
 - [ ] Preencher o `docs/01-discovery/interview-template.md` correspondente.
+- [ ] Salvar em `docs/01-discovery/interviews/INT-[NUMERO]-[NOME].md`.
 - [ ] Extrair citações diretas (*verbatim*) das dores mais agudas.
 - [ ] Atualizar a matriz de requisitos funcionais (`docs/02-requirements/functional-reqs.md`) com novos insights validados.

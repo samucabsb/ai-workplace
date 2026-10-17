@@ -23,15 +23,19 @@
 
 ## 2. Stack de Ferramentas e Fluxo Atual
 
-### 2.1 Ferramentas Atualmente em Uso
-- **Bases de Busca Utilizadas:**
-  - [ ] PubMed / Europe PMC
+### 2.1 Ferramentas e Bases de Busca Atualmente em Uso
+- **Bases Internacionais & Abertas:**
+  - [ ] PubMed / Europe PMC (NCBI)
   - [ ] OpenAlex
   - [ ] Semantic Scholar
   - [ ] arXiv / bioRxiv / medRxiv
   - [ ] Scopus / Web of Science (Institucional via CAPES/CAFe)
   - [ ] Google Scholar
-  - [ ] Outras: 
+- **Ecossistema Brasileiro & América Latina:**
+  - [ ] **SciELO (Scientific Electronic Library Online)**
+  - [ ] **Portal de Periódicos CAPES (Acesso Remoto CAFe / Comunidade Acadêmica Federada)**
+  - [ ] **BVS / LILACS (Biblioteca Virtual em Saúde / Literatura Latino-Americana em Ciências da Saúde)**
+  - [ ] Outras bases regionais: 
 - **Gerenciador de Referências:** [ ] Zotero [ ] Mendeley [ ] EndNote [ ] Nenhum (Pastas manuais)
 - **Ferramenta de Matriz/Síntese:** [ ] Excel / Google Sheets [ ] Notion [ ] Rayyan [ ] Covidence [ ] Papel / Bloco
 - **Uso prévio de IAs:** [ ] ChatGPT Plus [ ] Claude [ ] Perplexity [ ] Elicit [ ] SciSpace [ ] Consensus [ ] Nenhuma
@@ -48,7 +52,7 @@
 
 > 💡 *Dica do Mom Test: Registre frases exatas ("in verbatim quotes") do pesquisador para capturar a intensidade emocional da dor.*
 
-### Dor 1: Volume e Triagem Inicial
+### Dor 1: Volume, Triagem Inicial e Acesso a Bases
 - **Descrição da Dor:** 
 - **Citação Verbatim:** *"..."*
 - **Impacto em Horas/Semana:** 
@@ -75,7 +79,7 @@
 | Gatilho de Descarte | Seção do Artigo onde é detectado | Tempo gasto até descartar |
 | :--- | :--- | :--- |
 | Ex: *N < 30 sem cálculo de poder estatístico* | *Methods > Statistical Analysis* | *~15 minutos* |
-| | | |
+| Ex: *Periódico predatório sem Qualis ou sem indexação* | *Capa / Metadados do Periódico* | *~2 minutos* |
 | | | |
 | | | |
 
@@ -86,6 +90,9 @@
 > *Marque com [X] o que o entrevistado considerou vital e adicione colunas específicas da sua área.*
 
 - [ ] **Identificadores:** Título, Autores, Ano, Periódico, DOI verificado
+- [ ] **Estratificação de Impacto e Prestígio:**
+  - [ ] **Estrato Qualis CAPES** (A1, A2, A3, A4, B1, B2, B3, B4)
+  - [ ] **Quartil SJR (Scimago Journal Rank Q1 a Q4)** / Fator de Impacto JCR
 - [ ] **Amostra / População:** Número de sujeitos (N), Critérios de inclusão, Espécie/Linhagem celular
 - [ ] **Intervenção / Exposição:** Dosagem, Protocolo, Duração, Modelo experimental
 - [ ] **Grupo Controle / Comparador:** Placebo, Sham, Tratamento padrão, Ausência de controle

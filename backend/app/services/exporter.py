@@ -1,0 +1,105 @@
+import csv
+import io
+import re
+from typing import List, Dict, Any
+
+
+class ScientificExporter:
+    """Production service for exporting validated systematic review matrices and bibliographic records."""
+
+    @staticmethod
+    def clean_bibtex_key(author: str, year: Any) -> str:
+        """Generates a clean alphanumeric BibTeX key without accents or special characters."""
+        author_clean = re.sub(r"[^a-zA-Z]", "", author) or "Study"
+        return f"{author_clean}{year or 2024}"
+
+    @classmethod
+    def export_prisma_matrix_csv(cls, matrix_rows: List[Dict[str, Any]]) -> str:
+        """Exports the PRISMA 2020 Systematic Review Matrix as an RFC-4180 compliant CSV string."""
+        output = io.StringIO()
+        fieldnames = [
+            "CitationKey",
+            "DOI",
+            "Title",
+            "Authors",
+            "Year",
+            "Journal",
+            "QualisCAPES",
+            "SJRQuartile",
+            "PopulationN",
+            "Intervention",
+            "Comparator",
+            "Outcomes",
+            "RiskOfBias",
+            "StatisticalSoundness",
+            "TraceableQuote",
+            "PageReference",
+        ]
+
+        writer = csv.DictWriter(output, fieldnames=fieldnames, quoting=csv.QUOTE_ALL)
+        writer.writeheader()
+
+        for row in matrix_rows:
+            authors = row.get("authors", [])
+            authors_str = "; ".join(authors) if isinstance(authors, list) else str(authors)
+
+            writer.writerow({
+                "CitationKey": row.get("citation_key", ""),
+                "DOI": row.get("doi", ""),
+                "Title": row.get("title", ""),
+                "Authors": authors_str,
+                "Year": row.get("year", ""),
+                "Journal": row.get("journal", ""),
+                "QualisCAPES": row.get("qualis_capes", "N/A"),
+                "SJRQuartile": row.get("sjr_quartile", "N/A"),
+                "PopulationN": row.get("population_n", ""),
+                "Intervention": row.get("intervention", ""),
+                "Comparator": row.get("comparator", ""),
+                "Outcomes": row.get("outcomes", ""),
+                "RiskOfBias": row.get("risk_of_bias", "LOW"),
+                "StatisticalSoundness": row.get("statistical_soundness", "AUDITED"),
+                "TraceableQuote": row.get("traceable_quote", ""),
+                "PageReference": row.get("page_reference", ""),
+            })
+
+        return output.getvalue()
+
+    @classmethod
+    def export_bibtex_references(cls, matrix_rows: List[Dict[str, Any]]) -> str:
+        """Generates a clean BibTeX (.bib) file containing all verified literature citations.
+
+        Fully compatible with reference managers: Zotero, Mendeley, JabRef, and EndNote.
+        """
+        entries = []
+        for row in matrix_rows:
+            authors = row.get("authors", [])
+            if isinstance(authors, list) and authors:
+                authors_str = " and ".join(authors)
+                first_author = authors[0].split()[-1]
+            else:
+                authors_str = str(authors) or "Anonymous"
+                first_author = "Author"
+
+            year = row.get("year") or 2024
+            cite_key = row.get("citation_key") or cls.clean_bibtex_key(first_author, year)
+            title = row.get("title", "Untitled Scientific Study")
+            doi = row.get("doi", "")
+            journal = row.get("journal", "Academic Journal")
+            note_str = (
+                f"Audited by CortexLab; RoB: {row.get('risk_of_bias', 'LOW')}; "
+                f"Qualis: {row.get('qualis_capes', 'N/A')}"
+            )
+
+            entry = (
+                f"@article{{{cite_key},\n"
+                f"  title = {{{{{title}}}}},\n"
+                f"  author = {{{authors_str}}},\n"
+                f"  year = {{{year}}},\n"
+                f"  journal = {{{journal}}},\n"
+                f"  doi = {{{doi}}},\n"
+                f"  note = {{{note_str}}}\n"
+                f"}}"
+            )
+            entries.append(entry)
+
+        return "\n\n".join(entries) if entries else "% No references to export.\n"

@@ -9,6 +9,7 @@ import { PrismaMatrixTable } from "@/components/dashboard/PrismaMatrixTable";
 import { KnowledgeGapsCard } from "@/components/dashboard/KnowledgeGapsCard";
 import { ExportToolbar } from "@/components/dashboard/ExportToolbar";
 import { HumanApprovalModal } from "@/components/hitl/HumanApprovalModal";
+import { ByokConfigModal } from "@/components/settings/ByokConfigModal";
 import {
   MOCK_PAPERS,
   MOCK_PRISMA_ROWS,
@@ -16,6 +17,8 @@ import {
   createReview,
 } from "@/lib/api";
 import { AgentBenchId, PaperItem, PrismaMatrixItem } from "@/types";
+import { useLabStore } from "@/store/useLabStore";
+import { useAgentStream } from "@/hooks/useAgentStream";
 import {
   Sparkles,
   Search,
@@ -41,6 +44,10 @@ export default function CortexLabHomePage() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [reviewId, setReviewId] = useState<string>("rev-01");
 
+  // Zustand Store & Real-time SSE Stream
+  const { byok, setByokModalOpen, setReviewSession } = useLabStore();
+  useAgentStream(reviewId);
+
   const quickPills = [
     "CAR-T Cell Therapy in Solid Tumors",
     "Multi-Agent AI in Evidence Synthesis",
@@ -57,13 +64,21 @@ export default function CortexLabHomePage() {
     try {
       const res = await createReview(queryToUse);
       if (res) {
-        setReviewId(res.review_id || "rev-01");
+        const newRevId = res.review_id || "rev-01";
+        setReviewId(newRevId);
         setCurrentStep("SCREENING_CHECKPOINT");
         setHitlPending(true);
         setCheckpointType("screening");
         if (res.papers && res.papers.length > 0) {
           setPapers(res.papers);
         }
+        setReviewSession({
+          review_id: newRevId,
+          query: queryToUse,
+          current_step: "SCREENING_CHECKPOINT",
+          hitl_pending: true,
+          raw_papers: res.papers || [],
+        });
       }
     } finally {
       setIsLoading(false);
@@ -84,6 +99,8 @@ export default function CortexLabHomePage() {
       setActiveTab("dashboard");
     }, 400);
   };
+
+  const hasByokKeys = Boolean(byok.geminiApiKey || byok.groqApiKey);
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-cyan-500 selection:text-slate-950">
@@ -138,11 +155,17 @@ export default function CortexLabHomePage() {
           {/* Right Action Icons */}
           <div className="flex items-center gap-3">
             <button
-              onClick={() => alert("BYOK: Suas chaves de API (Google Gemini e Groq) são mantidas estritamente no seu navegador.")}
-              className="px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700 hover:border-slate-500 text-slate-300 text-xs font-mono flex items-center gap-1.5 transition-all cursor-pointer"
+              onClick={() => setByokModalOpen(true)}
+              className={`px-3 py-1.5 rounded-xl border text-xs font-mono flex items-center gap-1.5 transition-all cursor-pointer ${
+                hasByokKeys
+                  ? "bg-emerald-950/50 border-emerald-500/50 text-emerald-300 hover:border-emerald-400"
+                  : "bg-slate-900 border-slate-700 hover:border-amber-500/50 text-slate-300"
+              }`}
             >
-              <Key size={13} className="text-amber-400" />
-              <span className="hidden sm:inline">BYOK Ativo</span>
+              <Key size={13} className={hasByokKeys ? "text-emerald-400" : "text-amber-400"} />
+              <span className="hidden sm:inline">
+                {hasByokKeys ? "BYOK Configurado" : "BYOK (Chaves Próprias)"}
+              </span>
             </button>
 
             <a
@@ -282,6 +305,9 @@ export default function CortexLabHomePage() {
         papers={papers}
         onConfirmApproval={handleConfirmHitl}
       />
+
+      {/* BYOK Configuration Modal */}
+      <ByokConfigModal />
     </div>
   );
 }
